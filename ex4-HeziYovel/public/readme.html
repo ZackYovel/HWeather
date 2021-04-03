@@ -1,0 +1,259 @@
+<!doctype html>
+<html lang="en">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+    <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/css/bootstrap.min.css"
+          integrity="sha384-TX8t27EcRE3e/ihU7zmQxVncDAy5uIKz4rEkgIXeMed4M0jlfIDPvg6uqKI2xXr2" crossorigin="anonymous">
+
+    <title>Readme - Hezi Yovel</title>
+</head>
+<body>
+<div class="container-fluid">
+
+    <div class="jumbotron bg-primary text-light">
+        <h1>HWeather.com</h1>
+    </div>
+
+    <nav class="navbar navbar-expand-lg navbar-light bg-light mb-3">
+        <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarSupportedContent"
+                aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation">
+            <span class="navbar-toggler-icon"></span>
+        </button>
+
+        <div class="collapse navbar-collapse" id="navbarSupportedContent">
+            <ul class="navbar-nav mr-auto">
+                <li class="nav-item">
+                    <a class="nav-link" href="/">Home</a>
+                </li>
+                <li class="nav-item active">
+                    <a class="nav-link" href="#">Readme <span class="sr-only">(current)</span></a>
+                </li>
+            </ul>
+        </div>
+    </nav>
+
+    <div class="row mb-3">
+        <div class="col-12 col-lg-4">
+            <ul class="list-group">
+                <li class="list-group-item">Yekhezkel Yovel</li>
+                <li class="list-group-item">ID 066733700</li>
+                <li class="list-group-item">yekhezkel.yovel@gmail.com</li>
+            </ul>
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-4">
+            <h2>Execution</h2>
+            <p>The submission is a WebStorm project that can be run directly from the IDE.</p>
+        </div>
+
+        <div class="col-12 col-md-6 col-lg-4">
+            <h2>Assumptions</h2>
+            <p>The site uses bootstap CDN therefore assumes an internet connection is available.</p>
+        </div>
+    </div>
+    <div class="row m-0">
+        <div class="col-xl-3 bg-light border">
+            <h2>Known Issues</h2>
+            <ul>
+                <li>
+                    Although 90 is a valid latitude, the 7timer API responds to it with an invalid JSON in the response
+                    body. I assume this is a bug in the server code, and so I have handled it.
+                </li>
+            </ul>
+        </div>
+        <div class="col-xl-6 bg-light border">
+            <h2>Design Decisions</h2>
+            <ul>
+                <li>
+                    <h5>Data extraction from the API</h5>
+                    <p>
+                        I chose not to add anything beyond the requested: weather type, temperatures and wind speed,
+                        since it feels to me like designing the product itself and I am not interested in that. I did
+                        put some serious thinking into how to implement things, as will be explained ahead.
+                    </p>
+                    <p>
+                        Since I needed only the requested details, the 'civil' product was good enough for me. It
+                        contains all three, with low resolution wind speed, which is suitable for a weather forecasting
+                        app.
+                    </p>
+                </li>
+                <hr/>
+                <li>
+                    <h5>Duplicates in the locations list</h5>
+                    <p>
+                        I chose not to allow duplicates of any kind.
+                        If by duplicates we mean locations with the same name, latitude and longitude, it simply looks
+                        very unprofessional. If we mean locations with the same name and different lat/lon values,
+                        this may impact the user experience negatively if the user sees two locations with the same
+                        name and has to check the lat/lon (and probably copy-paste in into google maps) in order to
+                        understand the difference between them.
+                    </p>
+                </li>
+                <hr/>
+                <li>
+                    <h5>Hide the list when the forecast is displayed</h5>
+                    <p>
+                        I chose not to hide the list when the forecast is displayed, in order to allow the user quick
+                        access to it in case they need to see a different location. Also, since the graphic API does
+                        not provide a large image I can't use the advantage of the free space - the image will stay
+                        small (and somewhat cryptic).
+                    </p>
+                </li>
+                <hr/>
+                <li>
+                    <h5>Using modal to display error messages</h5>
+                    <p>
+                        I chose to use a modal for the display of error messages, since it is something the user can't
+                        oversee. Also, it can be used to block everything on the screen until the user clicked one of
+                        the modal buttons (including the exit button), an ability I used when I needed user
+                        confirmation.
+                    </p>
+                </li>
+                <hr/>
+                <li>
+                    <h5>Simulating sending error reports (with user permission)</h5>
+                    <p>
+                        Some error types require the website developers to take action. In such cases I simulate
+                        sending an error report to the developers by asking the user for permission to send the report
+                        in the modal body, and adding a confirm button and a deny button. In these cases the modal
+                        does not close if the user clicked outside of it. In other cases there is just one 'Close'
+                        button and the modal will close if the user clicks outside of it.
+                    </p>
+                </li>
+                <hr/>
+                <li>
+                    <h5>Using regular expressions for decimal numbers validation</h5>
+                    <p>
+                        In the previous exercise I used the isNaN() function for similar tasks, but that failed tests.
+                        So I checked the docs for isNaN and realised it has some unexpected behaviours, and
+                        that the formal recommendation is to use Number.isNaN() instead for such tasks. But
+                        Number.isNaN() doesn't do what I expect either, For example: the expression
+                        Number.isNaN('100hefsgfesg') evaluates to false. So I've defaulted to using regular expressions.
+                    </p>
+                </li>
+                <hr/>
+                <li>
+                    <h5>Specific Error Messages</h5>
+                    <p>
+                        When displaying an error message upon validation failure of the form, there are two ways to go:
+                    </p>
+                    <ol>
+                        <li>Display all of the rules that the input must comply with</li>
+                        <li>Display only the specific error that caused the failure</li>
+                    </ol>
+                    <p>
+                        For example, if a user typed a letter in the latitude input, the first option would be to print
+                        something like this: "Latitude must be a decimal number between -90 and 90". The second option
+                        would be to simply say that only decimal numbers are allowed.
+                    </p>
+                    <p>
+                        The advantage of the first option is that it provides the user with all of the information they
+                        need in order to fill the input properly next time. The disadvantage is that it bothers the
+                        user with information that is not necessarily needed, some of which the user may have figured
+                        out on their own.
+                    </p>
+                    <p>
+                        I chose the second option, because I think an error message should be as focused as possible,
+                        and thus assist the user to overcome the immediate problem as fast and as easy as possible.
+                        In addition it may be a good idea to provide the user with a method to get some description
+                        of the required input other then an error message, so that they can skip unnecessary
+                        inconveniences. In my exercise, I've added the full information in tooltips.
+                    </p>
+                </li>
+                <hr/>
+                <li>
+                    <h5>DOM Access</h5>
+                    <p>
+                        In order to avoid un-necessary DOM traversals I've implemented a domAccess module (namespace),
+                        which supplies an API which is a subset of the DOM API but caches fetched elements in Map
+                        objects (which are designed to perform better then regular JS objects as hashtables) for later
+                        use.
+                    </p>
+                    <p>
+                        Not all elements are stored though, and most of the domAccess API allows the caller to
+                        request a "refresh" which means a DOM query will be repeated, for use in case there is a chance
+                        the DOM changed.
+                    </p>
+                </li>
+                <hr/>
+                <li>
+                    <h5>Synchronized Display of Forecast Information and Image</h5>
+                    <p>
+                        Since forecast information and forecast image are fetched with two different HTTP requests,
+                        it is possible that one of the responses will be received some noticeable time before the
+                        other, or even that one of the requests will fail. In such cases I have two options:
+                    </p>
+                    <ol>
+                        <li>Display each response as soon as it arrives, possibly showing the user partial information
+                        </li>
+                        <li>Wait until both responses arrive to display all of the information together, and if one of
+                            the requests fail and the other succeeds not display the one that succeeded in order to
+                            avoid displaying partial information.
+                        </li>
+                    </ol>
+                    <p>
+                        The right choice in this case depends heavily on the goal of the application. If it is about
+                        providing information that cannot be found otherwise (for example, if the website is served
+                        to a closed network as the only method of getting weather information, I'd probably show
+                        partial information because partial is better than none. In such a case I would also try to
+                        collect weather data from multiple weather services, and display the different options to the
+                        users, so that if one service fails they may still get forecast from another service.
+                    </p>
+                    <p>
+                        But if the website lives in the open web, where plenty of websites and mobile apps provide
+                        weather information, I think it is more important to "look good", and displaying partial
+                        information doesn't look good at all. It can leave an impression of inconsistency,
+                        and confuse the users.
+                    </p>
+                    <p>
+                        I chose to synchronize the two responses using boolean flags - each handler will raise it's
+                        flag and check if the other flag is also raised. The first of them will find the other flag
+                        is down and will not display the information. The second one will see the other flag is up
+                        and will display the entire information at once.
+                    </p>
+                </li>
+                <hr/>
+                <li>
+                    <h5>Aborting ajax requests when a new request is made</h5>
+                    <p>
+                        The user may click the "Show Forecast" button when an ajax request to the 7timer API is still
+                        being processed, if the button was not disabled. That can lead to forecast information being
+                        replaced a short time after it was displayed, without showing the "loading.gif" animation. This
+                        may be confusing and is considered bad user experience.
+                    </p>
+                    <p>
+                        There are two possible solutions to that:
+                    </p>
+                    <ol>
+                        <li>Disable the "Show Forecast" button as long as the request is being processed</li>
+                        <li>Abort the current request or ignore it's response when a new request is made</li>
+                    </ol>
+                    <p>
+                        Since the first option means the user will be forced to wait for unwanted information, I feel
+                        like the best choice is the second option.
+                    </p>
+                    <p>
+                        I've implemented a combination of "aborting the current request" and "ignoring it's response"
+                        as a failsafe; if for some reason the aborting doesn't work (it is a bit new, some browsers
+                        don't support it), we will end up getting the response, but then we will ignore it when we find
+                        out there is a new request on the way.
+                    </p>
+                </li>
+            </ul>
+        </div>
+    </div>
+
+    <address>Submitted 17 December 2020</address>
+</div>
+
+
+<script src="https://code.jquery.com/jquery-3.5.1.slim.min.js"
+        integrity="sha384-DfXdz2htPH0lsSSs5nCTpuj/zy4C+OGpamoFVy38MVBnE+IbbVYUew+OrCXaRkfj"
+        crossorigin="anonymous"></script>
+<script src="https://cdn.jsdelivr.net/npm/bootstrap@4.5.3/dist/js/bootstrap.bundle.min.js"
+        integrity="sha384-ho+j7jyWK8fNQe+A12Hb8AhRq26LrZ/JpcUGGOn+Y7RsweNrtN/tE3MoK7ZeZDyx"
+        crossorigin="anonymous"></script>
+</body>
+</html>
